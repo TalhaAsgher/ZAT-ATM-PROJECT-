@@ -14,87 +14,6 @@ void fast_cash();
 int changePin(int correct_pin);
 void payBill();
 
-int main() {
-    int card_number;
-
-    printf("\t\t============ ZAT ATM ============\n");
-    printf("\t=========== Welcome to our ATM service ===========\n");
-    printf("Enter your card number : ");
-    scanf("%d", &card_number);
-    if (card_number == 7095) {
-        strcpy(cardtype, "Gold");
-        strcpy(name,"ZERAK");
-        balance = 150000;
-        correct_pin = 1234;
-        withdraw_limit = 100000;
-    } else if (card_number == 7500) {
-        strcpy(cardtype, "Platinum");
-           strcpy(name,"TALHA");
-           balance = 200000;
-        correct_pin = 1111;
-        withdraw_limit = 200000;
-    } else {
-        printf("Invalid card number.\nExiting...\n");
-        return 0;
-    }
-    if (!pinVerification()) {
-        return 0;
-    }
-    int choice;
-    char continue_t;
-
-    do {
-        printf("\nWelcome Mr.%s\n",name);
-        printf("Card Type: %s\n", cardtype);
-        printf("Select an Option:\n");
-        printf("1. CHECK BALANCE\t");
-        printf("2. WITHDRAW MONEY\n");
-        printf("3. FAST CASH\t");
-        printf("\t4. DEPOSIT MONEY\n");
-        printf("5.Change PIN\t");
-        printf("\t6.BILL PAYMENT\n");
-        printf("7.EXIT\n");
-        printf("======================================\n");
-        printf("ENTER YOUR CHOICE: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-                balanceInquiry();
-                break;
-            case 2:
-                withdraw();
-                break;
-            case 3:
-                fast_cash();
-                break;
-            case 4:
-                 deposit();
-                  break;
-            case 5:
-                changePin(correct_pin);
-                break;
-                case 6:
-                   payBill( balance);
-                   break;
-                case 7:
-                   printf("THANK YOU FOR USING ZAT ATM....\n");
-                   printf("@Developed By Codex");
-                return 0;
-            default:
-                printf("INVALID OPTION. CHOOSE FROM (1-7)\n");
-        }
-
-        printf("DO YOU WANT ANY OTHER TRANSACTION (Y/N): ");
-        scanf(" %c", &continue_t); 
-
-    } while (continue_t == 'y' || continue_t == 'Y');
-     printf("Thanks for using ZAT Bank!\n");
-     printf("@Developed By Codex\n");
-    printf("---------------------------\n\n");
-    
-    return 0;
-}
 
 int pinVerification() {
     int pin;
@@ -152,45 +71,47 @@ void balanceInquiry() {
     printf("\nYour current balance is: Rs. %d\n", balance);
     printReceipt("Balance Inquiry");
 }
-void fast_cash(){
+void fast_cash() {
     int select;
-    printf("1.10000\n");
-     printf("2.20000\n");
-     printf("3.50000\n");
-      printf("4.100000\n");
+    int amount = 0;
 
-      printf("Select your withdrawl: ");
-      scanf("%d",&select);
-      if (balance<100000)
-      {
-        printf("Enough amount in your card.\n");
-      }else{
-      switch(select){
+    printf("1. 10000\n");
+    printf("2. 20000\n");
+    printf("3. 50000\n");
+    printf("4. 100000\n");
+
+    printf("Select your withdrawal: ");
+    scanf("%d", &select);
+
+    switch (select) {
         case 1:
-        balance=balance-10000;
-        printf("Rs.10000 withdrawn successfully.\n");
-        printReceipt("Fast Cash");
-        break;
-         case 2:
-        balance=balance-20000;
-        printf("Rs.20000 withdrawn successfully.\n");
-        printReceipt("Fast Cash");
-        break;
-         case 3:
-        balance=balance-50000;
-        printf("Rs.50000 withdrawn successfully.\n");
-        printReceipt("Fast Cash");
-        break;
-         case 4:
-        balance=balance-100000;
-        printf("Rs.100000 withdrawn successfully.\n");
-        printReceipt("Fast Cash");
-        break;
+            amount = 10000;
+            break;
+        case 2:
+            amount = 20000;
+            break;
+        case 3:
+            amount = 50000;
+            break;
+        case 4:
+            amount = 100000;
+            break;
         default:
-        printf("Invalid Option.\n");
-      } 
+            printf("Invalid Option.\n");
+            return;
+    }
+
+    if (amount > balance) {
+        printf("NOT ENOUGH BALANCE.\n");
+    } else if (amount > withdraw_limit) {
+        printf("AMOUNT EXCEEDS YOUR CARD LIMIT.\n");
+    } else {
+        balance = balance - amount;
+        printf("Rs.%d withdrawn successfully.\n", amount);
+        printReceipt("Fast Cash");
     }
 }
+
 void printReceipt(char transactionType[]) {
     printf("\n--- Transaction Receipt ---\n");
     printf("Transaction Type : %s\n", transactionType);
@@ -274,4 +195,86 @@ void payBill() {
         default:
             printf("Invalid Option.\n");
     }
+}
+
+int main() {
+    int card_number;
+
+    printf("\t\t============ ZAT ATM ============\n");
+    printf("\t=========== Welcome to our ATM service ===========\n");
+    printf("Enter your card number : ");
+    scanf("%d", &card_number);
+    if (card_number == 7095) {
+        strcpy(cardtype, "Gold");
+        strcpy(name,"ZERAK");
+        balance = 150000;
+        correct_pin = 1234;
+        withdraw_limit = 100000;
+    } else if (card_number == 7500) {
+        strcpy(cardtype, "Platinum");
+           strcpy(name,"TALHA");
+           balance = 200000;
+        correct_pin = 1111;
+        withdraw_limit = 200000;
+    } else {
+        printf("Invalid card number.\nExiting...\n");
+        return 0;
+    }
+    if (!pinVerification()) {
+        return 0;
+    }
+    int choice;
+    char continue_t;
+
+    do {
+        printf("\nWelcome Mr.%s\n",name);
+        printf("Card Type: %s\n", cardtype);
+        printf("Select an Option:\n");
+        printf("1. CHECK BALANCE\t");
+        printf("2. WITHDRAW MONEY\n");
+        printf("3. FAST CASH\t");
+        printf("\t4. DEPOSIT MONEY\n");
+        printf("5.Change PIN\t");
+        printf("\t6.BILL PAYMENT\n");
+        printf("7.EXIT\n");
+        printf("======================================\n");
+        printf("ENTER YOUR CHOICE: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                balanceInquiry();
+                break;
+            case 2:
+                withdraw();
+                break;
+            case 3:
+                fast_cash();
+                break;
+            case 4:
+                 deposit();
+                  break;
+            case 5:
+                changePin(correct_pin);
+                break;
+                case 6:
+                   payBill( balance);
+                   break;
+                case 7:
+                   printf("THANK YOU FOR USING ZAT ATM....\n");
+                   printf("@Developed By Codex");
+                return 0;
+            default:
+                printf("INVALID OPTION. CHOOSE FROM (1-7)\n");
+        }
+
+        printf("DO YOU WANT ANY OTHER TRANSACTION (Y/N): ");
+        scanf(" %c", &continue_t); 
+
+    } while (continue_t == 'y' || continue_t == 'Y');
+     printf("Thanks for using ZAT Bank!\n");
+     printf("@Developed By Codex\n");
+    printf("---------------------------\n\n");
+    
+    return 0;
 }
